@@ -32,14 +32,36 @@
       
       var isPlaying = false;
       
+      function updateIcon() {
+        if (isPlaying) {
+          document.getElementById('button').src = "img/Button-Play-icon.png";
+        } else {
+          document.getElementById('button').src = "img/Button-Pause-icon.png";
+        }
+      } 
+      
+      $(document.body).peerbind("popcornplay", {
+        peer: function(e) {
+          updateIcon();
+          isPlaying = true;
+          console.log("peer triggered play");
+        }
+      });
+      $(document.body).peerbind("popcornpause", {
+        peer: function(e) {
+          updateIcon();
+          isPlaying = false;
+          console.log("peer triggered play");
+        }
+      });
+      
       document.getElementById('button').addEventListener('click', function(e) {
         if (isPlaying) {
           $(document.body).peertrigger("popcornpause");
-          this.src = "img/Button-Play-icon.png";
         } else {
           $(document.body).peertrigger("popcornplay");
-          this.src = "img/Button-Pause-icon.png";
         }
+        updateIcon();
         isPlaying = !isPlaying;
       }, false);
     });
